@@ -1,0 +1,231 @@
+---
+title: "Notes-Doing Bayesian Data Analysis"
+subtitle: 'The Basics: Models, Probability, Bayes’ Rule, and R'
+author: "Ignacio Sepulveda"
+date: "2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# Chr 2 Introduction: Credibility, Models, and Parameters
+
+Bayesian data analysis has two foundational ideas. 
+
+The first idea is that Bayesian inference is reallocation of credibility across possibilities. 
+
+The second foundational idea is that the possibilities, over which we allocate credibility, are parameter values in meaningful mathematical models.
+
+## 2.1.BAYESIAN INFERENCE IS REALLOCATION OF CREDIBILITY ACROSS POSSIBILITIES
+
+En un sentido practico haciendo analisis bayesiano implica asignar probabilidades a todos las posibilidades, de ahi surge el concepto de , reallocation of credibility donde a medida que voy observando vwe would re-allocate credibility to the hypothesis even if we have low prior probility.  
+
+**"How often have I said to you that when you have eliminated the impossible, whatever
+remains, however improbable, must be the truth?"**
+
+_Posterior distribution_: Is the re-allocate distribution of credibility, it is we believe after taking into account the new observations. 
+
+_Exoneration_: Si es que dos posibilidades son mutuamente excluyentes, entonces despues de re-allocation quedan descartadas dado exclusion.
+
+
+### 2.1.1.Data are noisy and inferences are probabilistic.
+
+En la mayoria de los casos los datos no son deterministicos y solo mantiene relaciones de probabilidad con la causas subyacente.
+
+Lo importante y bien enfatico en esto, es que Bayesian Analysis is the mathematics of re-allocating probability in a logically coherent and precise way. 
+
+## 2.2. POSSIBILITIES ARE PARAMETER VALUES IN DESCRIPTIVE MODELS
+
+A key step in Bayesian analysis is defining the set of possibilities over which credibility is allocated.
+The magnitude of difference describes the data, and our goal is to assess which possible descriptions
+are more or less credible.
+
+Normal distributions have two parameters, mean and variance, sometimes mean is called a _location parameter_ y the sd is called a _scale parameter_,
+en ese sentido en analisis bayesiano se encargaria de darle una exacta credibilidad relativa a los parametros.
+
+Two main wishes for math description of data.
+
+First, the mathematical form should be comprehensible with meaningful parameters.
+
+Thus, Bayesian analysis reallocates credibility among parameter values within a meaningful space of possibilities defined by the chosen model.
+
+The second desideratum for a mathematical description is that it should be descriptively
+adequate, which means, loosely, that the mathematical form should “look like” the data.
+There is not be any important systemtic discrepancies between trends in the data and the form of the model. 
+
+Bayesian analysis is very useful for assessing the relative credibility of different candidate
+descriptions of data.
+
+
+## 2.3. THE STEPS OF BAYESIAN DATA ANALYSIS
+
+In general, Bayesian analysis of data follows these steps:
+
+1. Identify the data relevant to the research questions.What are the measurement scales of the data? Which data variables are to be predicted, and which data variables are
+supposed to act as predictors?
+
+2. Define a descriptive model for the relevant data. The mathematical form and its parameters should be meaningful and appropriate to the theoretical purposes of the analysis.
+
+3. Specify a prior distribution on the parameters. The prior must pass muster with the
+audience of the analysis, such as skeptical scientists.
+
+4. Use Bayesian inference to re-allocate credibility across parameter values. Interpret
+the posterior distribution with respect to theoretically meaningful issues (assuming
+that the model is a reasonable description of the data; see next step).
+
+5. Check that the posterior predictions mimic the data with reasonable accuracy (i.e.,conduct a “posterior predictive check”). If not, then consider a different descriptive model.
+
+## 2.4 EXERCISES
+
+Exercise 2.1. Suppose we have a four-sided die from a board game. On a tetrahedral die, each face is an equilateral triangle.When you roll the die, it lands with one face down and the other three faces visible as a three-sided pyramid. The faces are numbered 1-4, with the value of the bottom face printed (as clustered dots) at the bottom
+edges of all three visible faces. Denote the value of the bottom face as x. Consider the following three mathematical descriptions of the probabilities of x.
+$$Model\:A: p(x) = 1/4,\:
+Model\:B: p(x) = x/10 \:y\:
+Model\:C: p(x) = 12/(25x)$$
+For each model, determine the value of p(x) for each value of x. Describe in words what kind of bias (or lack of bias) is expressed by each model.
+**R:**
+
+\begin{equation*}
+\left.
+\begin{aligned}
+p(1)& = 1/4\\
+p(2)& = 1/4\\
+p(3)& = 1/4\\
+p(4)& = 1/4\\
+\end{aligned}
+\right\}
+\quad\text{Model A}
+\end{equation*} 
+
+Las probabilidades se distribuyen de igual manera entonces no hay sesgo.
+
+\begin{equation*}
+\left.
+\begin{aligned}
+p(1)& = 1/10\\
+p(2)& = 2/10\\
+p(3)& = 3/10\\
+p(4)& = 4/10\\
+\end{aligned}
+\right\}
+\quad\text{Model B}
+\end{equation*}
+
+Se encuentra sesgado hacia valores grandes de x.
+
+\begin{equation*}
+\left.
+\begin{aligned}
+p(1)& = 12/25\\
+p(2)& = 6/25\\
+p(3)& = 4/25\\
+p(4)& = 3/25\\
+\end{aligned}
+\right\}
+\quad\text{Model C}
+\end{equation*}
+
+Se encuentra sesgado hacia valores menores de x
+
+
+Exercise 2.2. Suppose we have the tetrahedral die introduced in the previous
+exercise, along with the three candidate models of the die’s probabilities. Suppose that
+initially, we are not sure what to believe about the die. On the one hand, the die might
+be fair, with each face landing with the same probability. On the other hand, the die
+might be biased, with the faces that have more dots landing down more often (because
+the dots are created by embedding heavy jewels in the die, so that the sides with more
+dots are more likely to land on the bottom). On yet another hand, the die might be biased such that more dots on a face make it less likely to land down (because maybe
+the dots are bouncy rubber or protrude from the surface). So, initially, our beliefs about
+the three models can be described as p(A) = p(B) = p(C) = 1/3. Now we roll the
+die 100 times and find these results: #1’s = 25, #2’s = 25, #3’s = 25, #4’s = 25. Do
+these data change our beliefs about the models? Which model now seems most likely?
+Suppose when we rolled the die 100 times we found these results: #1’s = 48, #2’s = 24, #3’s = 16, #4’s = 12. Now which model seems most likely?
+
+R: 
+
+En el primer caso dado la frecuencia de cada dato es la misma lo que se coincide con el Modelo A el que asigna la misma probabilidad a c/u, entonces re-allocate mas probabilidad al modelo A.
+
+Y en el segundo caso se parece mas al modelo C por lo que asignamos mas credibilidad a este modelo.
+*Y por exclusion es menos la probabilidad de B.
+
+**GG CON EL 3**
+
+
+
+
+
+# Chr 4 What Is This Stuff Called Probability?
+
+## 4.1 THE SET OF ALL POSSIBLE EVENTS
+
+_Sample space:_Is the set of all the possible outcomes in mind. This set exhausts all possible outcomes, and the outcomes are all
+mutually exclusive. This set is called the sample space.
+
+Creo que por aca va el tema, yo puedo tener un _degree of belif_ sobre la _probabilidad_. El ejemplo del libros es imagica que la moneda tiene un probabilidad de ser manipulada entonces si $\theta$ corresponde al parametro seria la probabilidad de ese parametro $p(\theta)$, en el caso de las monedas, imaginemos que la probabilidad de manipulacion es $p(\theta=0.5)=0.99$ o por el contrario $p(\theta=0.5)=0.01 \:and\:that\:p(\theta=0.9)=0.99$.
+
+## 4.2 PROBABILITY: OUTSIDE OR INSIDE THE HEAD
+
+Sometimes we talk about probabilities of things that are not so clearly “out there,”and instead are just possible beliefs “inside the head.”
+
+### 4.2.1. Outside the head: Long-run relative frequency
+
+For events outside the head, it’s intuitive to think of probability as being the long-run relative frequency of each possible outcome.
+
+#### 4.2.1.1 Simulating a long-run relative frequency.
+
+Notese como yo formula esto, hay un proceso generador que genera H o T cuando sacamos muestras. El proceso se genera tiene un parametro que llamamos \theta=0.5. Cuando simulamos recordemos que nuestor long-run parametro sera solo de una muestra entonces no tiene que ser el mismo, sera _cercano_. 
+
+#### 4.2.1.2 Deriving a long-run relative frequency
+
+Si la matematica del modelo es facil sera facil derivar sus frecuecnias relativas
+
+### 4.2.2. Inside the head: Subjective belief
+
+To specify our subjective beliefs, we have to specify how likely we think each possible outcome is.
+
+#### 4.2.2.1 Calibrating a subjective belief by preferences
+
+#### 4.2.2.2 Describing a subjective beliefmathematically
+
+### 4.2.3. Probabilities assign numbers to possibilities.
+
+In general, a probability, whether it’s outside the head or inside the head, is just a way
+of assigning numbers to a set of mutually exclusive possibilities. The numbers, called
+“probabilities,” merely need to satisfy three properties (Kolmogorov, 1956):
+
+1) A probability value must be nonnegative (i.e., zero or positive).
+
+2) The sum of the probabilities across all events in the entire sample space must be
+1.0 (i.e., one of the events in the space must happen, otherwise the space does not
+exhaust all possibilities).
+
+3. For any two mutually exclusive events, the probability that one or the other occurs is the sum of their individual probabilities. For example, the probability that a fair
+six-sided die comes up 3-dots or 4-dots is 1/6 + 1/6 = 2/6.
+Any assignment of numbers to events that respects those three properties will also have all the properties of probabilities that we will discuss below. So whether a probability is
+thought of as a long-run relative frequency of outcomes in the world, or as a magnitude of a subjective belief, it behaves the same way mathematically.
+
+## 4.3 PROBABILITY DISTRIBUTIONS
+
+A probability distribution is simply a list of all possible outcomes and their
+corresponding probabilities.
+
+### 4.3.1. Discrete distributions: Probability mass
+
+When the sample space consists of discrete outcomes, then we can talk about the
+probability of each distinct outcome.
+
+### 4.3.2. Continuous distributions: Rendezvous with density
+
+Density is the amount of stuff per unit of space it takes up.
+
+#### 4.3.2.1 Properties of probability density functions
+
+In general, for any continuous value that is split up into intervals, the sum of the probability masses of the intervals must be 1, because, by definition of making a measurement, some value of the measurement scale must occur.
+
+$$\sum_ip([x_i,x_i+\triangle x])=1$$
+
+_Density_: It is the ratio of probability mass over interval width.
+
+$$\sum_i\triangle{x}\frac{p([x_i,x_i+\triangle{x}])}{\triangle{x}}=1$$
+
